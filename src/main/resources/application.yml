@@ -1,0 +1,38 @@
+spring: 
+  main: 
+    show-banner: false
+
+#server: 
+#  port: 8443
+#  ssl:
+#    key-store: file:///C:/Users/ecggghm/mykeys.jks
+#    key-store-password: 123456
+#    key-password: 123456
+logging: 
+  level: 
+  root: INFO
+  
+---
+
+spring:
+  profiles: development
+
+logging:
+  level:
+    root: DEBUG
+server:
+  port: 8081
+    
+---
+
+spring:
+  profiles: production
+  
+logging:
+  path: file:///C:/Users/ecggghm/logs/
+  file: bookworm.log
+  level:
+    root: WARN
+server:
+  port: 8082
+      
