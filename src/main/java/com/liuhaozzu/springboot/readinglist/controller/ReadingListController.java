@@ -15,7 +15,7 @@ import com.liuhaozzu.springboot.readinglist.props.AmazonProperties;
 
 
 @Controller
-@RequestMapping("/")
+@RequestMapping("/readingList")
 
 public class ReadingListController {
 

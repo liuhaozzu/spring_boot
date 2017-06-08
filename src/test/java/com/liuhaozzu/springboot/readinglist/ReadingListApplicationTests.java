@@ -11,6 +11,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
@@ -20,6 +21,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import com.liuhaozzu.springboot.readinglist.entity.Book;
+import com.liuhaozzu.springboot.readinglist.entity.Reader;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -80,6 +82,23 @@ public class ReadingListApplicationTests {
                 .andExpect(MockMvcResultMatchers.model().attribute("books", Matchers.hasSize(1)))
                 .andExpect(MockMvcResultMatchers.model().attribute("books",
                         Matchers.contains(Matchers.samePropertyValuesAs(expectedBook))));
+    }
+
+    @Test
+    //@WithMockUser(username = "craig", password = "password", roles = "READER")
+    @WithUserDetails("craig")
+    public void homePage_authenticatedUser() throws Exception {
+        Reader expectedReader = new Reader();
+        expectedReader.setUsername("craig");
+        expectedReader.setPassword("password");
+        expectedReader.setFullname("Craig Walls");
+
+        mockMvc.perform(get("/"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("readingList"))
+                .andExpect(model().attribute("reader", Matchers.samePropertyValuesAs(expectedReader)))
+                .andExpect(model().attribute("books", Matchers.hasSize(0)));
+
     }
 
 }
